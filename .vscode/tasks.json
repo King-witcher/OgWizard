@@ -1,0 +1,133 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "File",
+      "description": "Path to a file",
+      "type": "promptString",
+    },
+    {
+      "id": "Link type",
+      "description": "Type of link to create",
+      "type": "pickString",
+      "default": "lib",
+      "options": [
+        {
+          "label": "Binaries",
+          "value": "lib"
+        },
+        {
+          "label": "Headers",
+          "value": "include"
+        }
+      ]
+    },
+  ],
+  "tasks": [
+    {
+      "label": "g++: build (Release)",
+      "icon": {
+        "color": "terminal.ansiGreen",
+        "id": "tools"
+      },
+      "detail": "Compile c++ code for release",
+      "type": "cppbuild",
+      "command": "g++",
+      "args": [
+        "${workspaceFolder}/src/**.cpp",
+        "-fdiagnostics-color=always",
+        "-std=c++26",
+        "-I", "${workspaceFolder}/include/",
+        "-L", "${workspaceFolder}/lib/",
+        "-lglfw3",
+        "-lgdi32",
+        "-o", "${workspaceFolder}/bin/release/program.exe"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": "$gcc",
+      "group": "build",
+    },
+
+    {
+      "label": "g++: build (Debug)",
+      "icon": {
+        "color": "terminal.ansiRed",
+        "id": "tools"
+      },
+      "detail": "Compile c++ code for debugging",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "src/**.{c,cpp}",
+        "-fdiagnostics-color=always",
+        "-g", "-O0",
+        "-std=c++26",
+        "-I", "include",
+        "-L", "lib",
+        "-lglfw3",
+        "-lgdi32",
+        "-o", "bin/debug/program.exe"
+      ],
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+
+    {
+      "label": "glslc: compile",
+      "detail": "Compile all GLSL shaders",
+      "icon": {
+        "color": "terminal.ansiMagenta",
+        "id": "paintcan"
+      },
+      "type": "shell",
+      "group": "build",
+      "command": "./compile_shaders.sh",
+      "problemMatcher": {
+        "owner": "glslc",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(?:ERROR|WARNING): (.*):(\\d+):(\\d+): (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        }
+      }
+    },
+
+    {
+      "label": "project: build (Release)",
+      "detail": "Build all (C++ and GLSL) for release",
+      "icon": {
+        "id": "rocket",
+        "color": "terminal.ansiGreen",
+      },
+      "dependsOn": [
+        // "glslc: compile",
+        "g++: build (Release)"
+      ],
+      "dependsOrder": "parallel",
+      "group": "build",
+    },
+
+    {
+      "label": "project: build (Debug)",
+      "detail": "Build all (C++ and GLSL) for debugging",
+      "icon": {
+        "id": "rocket",
+        "color": "terminal.ansiRed",
+      },
+      "dependsOn": [
+        // "glslc: compile",
+        "g++: build (Debug)"
+      ],
+      "dependsOrder": "parallel",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+  ],
+}
