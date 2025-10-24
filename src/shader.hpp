@@ -5,10 +5,12 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class ShaderProgram
 {
 public:
-  ShaderProgram(std::string vertexPath);
+  ShaderProgram(string vertexPath, string fragmentPath);
   ~ShaderProgram();
 
   ShaderProgram(const ShaderProgram &) = delete;
@@ -16,4 +18,5 @@ public:
 
 private:
   GLuint glVertexShader;
+  GLuint glFragmentShader;
 };

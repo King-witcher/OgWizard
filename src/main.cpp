@@ -29,7 +29,7 @@ int main()
       0.5f, -0.5f, 0.0f,
       0.0f, 0.5f, 0.0f};
 
-  ShaderProgram shaderProgram("src/shaders/shader.vert");
+  ShaderProgram shaderProgram("src/shaders/shader.vert", "src/shaders/shader.frag");
 
   while (!window.shouldClose())
   {

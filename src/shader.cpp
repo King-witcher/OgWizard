@@ -22,27 +22,32 @@ string readFile(const string &filepath)
   return content;
 }
 
-GLuint compileShader()
+GLuint compileShader(string source, GLenum type)
 {
-}
-
-ShaderProgram::ShaderProgram(string vertexPath)
-{
-  auto vertexCode = readFile(vertexPath);
-  std::cout << vertexCode << std::endl;
-  glVertexShader = glCreateShader(GL_VERTEX_SHADER);
-  auto codePtr = vertexCode.data();
-  glShaderSource(glVertexShader, 1, &codePtr, nullptr);
-  glCompileShader(glVertexShader);
+  GLuint shaderId = glCreateShader(type);
+  auto ptr = source.data();
+  glShaderSource(shaderId, 1, &ptr, nullptr);
+  glCompileShader(shaderId);
 
   i32 success;
-  glGetShaderiv(glVertexShader, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
   if (!success)
   {
     char infoLog[512];
-    glGetShaderInfoLog(glVertexShader, 512, nullptr, infoLog);
+    glGetShaderInfoLog(shaderId, 512, nullptr, infoLog);
     throw runtime_error("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"s + infoLog);
   }
+
+  return shaderId;
+}
+
+ShaderProgram::ShaderProgram(string vertexPath, string fragmentPath)
+{
+  auto vertexCode = readFile(vertexPath);
+  auto fragmentCode = readFile(fragmentPath);
+
+  glVertexShader = compileShader(vertexCode, GL_VERTEX_SHADER);
+  glFragmentShader = compileShader(fragmentCode, GL_FRAGMENT_SHADER);
 }
 
 ShaderProgram::~ShaderProgram()
