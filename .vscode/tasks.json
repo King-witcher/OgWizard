@@ -57,7 +57,7 @@
       "command": "g++",
       "args": [
         "src/**.{c,cpp}",
-        "-g", "-O2",
+        "-g", "-O0",
         "-fdiagnostics-color=always",
         "-std=c++26",
         "-I", "include/",

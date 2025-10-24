@@ -2,31 +2,34 @@
 #include "rust_types.hpp"
 
 #include <fstream>
+#include <filesystem>
 #include <vector>
+#include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
-vector<char> readFile(string &filepath)
+string readFile(const string &filepath)
 {
-  ifstream file{filepath, ios::ate | ios::binary};
+  ifstream file(filepath, ios::binary);
 
   if (!file.is_open())
-    throw runtime_error("failed to open file: " + filepath);
+    throw runtime_error("Failed to open file: "s + filepath);
 
-  usize fileSize = static_cast<usize>(file.tellg());
-  vector<char> buffer(fileSize);
+  usize size = filesystem::file_size(filepath);
+  string content(size, '\0');
+  file.read(content.data(), size);
+  return content;
+}
 
-  file.seekg(0);
-  file.read(buffer.data(), fileSize);
-
-  file.close();
-
-  return vector<char>(10);
+GLuint compileShader()
+{
 }
 
 ShaderProgram::ShaderProgram(string vertexPath)
 {
   auto vertexCode = readFile(vertexPath);
+  std::cout << vertexCode << std::endl;
   glVertexShader = glCreateShader(GL_VERTEX_SHADER);
   auto codePtr = vertexCode.data();
   glShaderSource(glVertexShader, 1, &codePtr, nullptr);
