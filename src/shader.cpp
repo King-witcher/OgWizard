@@ -35,7 +35,7 @@ GLuint compileShader(string source, GLenum type)
   {
     char infoLog[512];
     glGetShaderInfoLog(shaderId, 512, nullptr, infoLog);
-    throw runtime_error("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"s + infoLog);
+    throw runtime_error("ERROR::SHADER::COMPILATION_FAILED\n"s + infoLog);
   }
 
   return shaderId;

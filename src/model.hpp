@@ -2,26 +2,30 @@
 #include <vector>
 
 #include "rust_types.hpp"
+#include "engine.hpp"
 
 namespace ogw
 {
   class Model
   {
   public:
-    struct AttributeData
-    {
-      u32 location;
-      u32 size;
-      GLenum type;
-      u32 stride;
-      u32 offset;
-    };
-
     struct Vertex
     {
-      float position[3];
+      float position[2];
+      float color[3];
+
+      static std::vector<AttributeDescription> defaultAttributeDescriptions();
     };
 
-    Model(const std::vector<Vertex> &verteices);
+    Model(const std::vector<Vertex> &verteices, const std::vector<u32> &indices);
+    ~Model();
+
+    Model &operator=(const Model &) = delete;
+    Model(const Model &) = delete;
+
+    void bind() const;
+
+  private:
+    u32 vao;
   };
 }

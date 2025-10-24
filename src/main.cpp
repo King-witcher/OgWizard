@@ -7,6 +7,8 @@
 
 #include "window.hpp"
 #include "shader.hpp"
+#include "vbo.hpp"
+#include "model.hpp"
 
 void processInput(GLFWwindow *window)
 {
@@ -24,22 +26,14 @@ int main()
   glViewport(0, 0, 800, 600); // Define onde na janela eu quero renderizar
   glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-  float vertices[] = {
-      -0.5f, -0.5f, 0.0f,
-      0.5f, -0.5f, 0.0f,
-      0.0f, 0.5f, 0.0f};
+  vector<ogw::Model::Vertex> vertices = {
+      {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+      {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
+      {{0.0f, 0.5f}, {0.0f, 0.0f, 1.0f}}};
+  vector<u32> indices{0, 1, 2};
 
-  u32 VAO;
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
-
-  u32 VBO;
-  glGenBuffers(1, &VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-  glEnableVertexAttribArray(0);
+  ogw::Model model(vertices, indices);
+  model.bind();
 
   ShaderProgram shaderProgram("src/shaders/shader.vert", "src/shaders/shader.frag");
   shaderProgram.use();

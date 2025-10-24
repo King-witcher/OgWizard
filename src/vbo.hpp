@@ -14,8 +14,7 @@ public:
   VBO(const VBO &) = delete;
   VBO &operator=(const VBO &) = delete;
 
-  void bind() const;
-  void unbind() const;
+  void bind();
 
 private:
   GLuint bufferId;

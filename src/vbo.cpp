@@ -11,3 +11,8 @@ VBO::~VBO()
 {
   glDeleteBuffers(1, &bufferId);
 }
+
+void VBO::bind()
+{
+  glBindBuffer(GL_ARRAY_BUFFER, bufferId);
+}
