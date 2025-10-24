@@ -16,7 +16,10 @@ public:
   ShaderProgram(const ShaderProgram &) = delete;
   ShaderProgram &operator=(const ShaderProgram &) = delete;
 
+  void use();
+
 private:
-  GLuint glVertexShader;
-  GLuint glFragmentShader;
+  void createProgram(GLuint vertex, GLuint fragment);
+
+  GLuint glProgramId;
 };

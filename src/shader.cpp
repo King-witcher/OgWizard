@@ -29,7 +29,7 @@ GLuint compileShader(string source, GLenum type)
   glShaderSource(shaderId, 1, &ptr, nullptr);
   glCompileShader(shaderId);
 
-  i32 success;
+  GLint success;
   glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
   if (!success)
   {
@@ -46,11 +46,38 @@ ShaderProgram::ShaderProgram(string vertexPath, string fragmentPath)
   auto vertexCode = readFile(vertexPath);
   auto fragmentCode = readFile(fragmentPath);
 
-  glVertexShader = compileShader(vertexCode, GL_VERTEX_SHADER);
-  glFragmentShader = compileShader(fragmentCode, GL_FRAGMENT_SHADER);
+  GLuint vertex = compileShader(vertexCode, GL_VERTEX_SHADER);
+  GLuint fragment = compileShader(fragmentCode, GL_FRAGMENT_SHADER);
+
+  createProgram(vertex, fragment);
+
+  glDeleteShader(vertex);
+  glDeleteShader(fragment);
 }
 
 ShaderProgram::~ShaderProgram()
 {
-  glDeleteShader(glVertexShader);
+  glDeleteProgram(glProgramId);
+}
+
+void ShaderProgram::use()
+{
+  glUseProgram(glProgramId);
+}
+
+void ShaderProgram::createProgram(GLuint vertex, GLuint fragment)
+{
+  glProgramId = glCreateProgram();
+  glAttachShader(glProgramId, vertex);
+  glAttachShader(glProgramId, fragment);
+  glLinkProgram(glProgramId);
+
+  GLint success;
+  glGetProgramiv(glProgramId, GL_LINK_STATUS, &success);
+  if (!success)
+  {
+    char infoLog[512];
+    glGetProgramInfoLog(glProgramId, 512, nullptr, infoLog);
+    throw runtime_error("ERROR::SHADER::PROGRAM::LINKING_FAILED\n"s + infoLog);
+  }
 }
