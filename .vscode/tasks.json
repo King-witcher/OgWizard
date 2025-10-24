@@ -31,25 +31,21 @@
         "id": "tools"
       },
       "detail": "Compile c++ code for release",
-      "type": "cppbuild",
+      "type": "shell",
       "command": "g++",
       "args": [
-        "${workspaceFolder}/src/**.cpp",
+        "src/**.{c,cpp}",
         "-fdiagnostics-color=always",
         "-std=c++26",
-        "-I", "${workspaceFolder}/include/",
-        "-L", "${workspaceFolder}/lib/",
+        "-I", "include/",
+        "-L", "lib/",
         "-lglfw3",
         "-lgdi32",
-        "-o", "${workspaceFolder}/bin/release/program.exe"
+        "-o", "bin/release/program.exe"
       ],
-      "options": {
-        "cwd": "${fileDirname}"
-      },
       "problemMatcher": "$gcc",
       "group": "build",
     },
-
     {
       "label": "g++: build (Debug)",
       "icon": {
@@ -61,11 +57,11 @@
       "command": "g++",
       "args": [
         "src/**.{c,cpp}",
+        "-g", "-O2",
         "-fdiagnostics-color=always",
-        "-g", "-O0",
         "-std=c++26",
-        "-I", "include",
-        "-L", "lib",
+        "-I", "include/",
+        "-L", "lib/",
         "-lglfw3",
         "-lgdi32",
         "-o", "bin/debug/program.exe"

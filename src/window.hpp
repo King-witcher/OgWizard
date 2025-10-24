@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+
 #include "rust_types.hpp"
 
 #include <glad/glad.h>
@@ -18,6 +19,7 @@ public:
   Window &operator=(const Window &) = delete;
 
   bool shouldClose() { return glfwWindowShouldClose(window); }
+  GLFWwindow *get() { return window; }
 
 private:
   void initGlfw();
