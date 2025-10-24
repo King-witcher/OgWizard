@@ -1,8 +1,10 @@
+#pragma once
+
 #include <glad/glad.h>
 #include <vector>
 
 #include "rust_types.hpp"
-#include "engine.hpp"
+#include "pipeline.hpp"
 
 namespace ogw
 {
@@ -23,9 +25,11 @@ namespace ogw
     Model &operator=(const Model &) = delete;
     Model(const Model &) = delete;
 
-    void bind() const;
+    void bind() const { glBindVertexArray(vao); }
+    usize vertexCount() const { return vertexCount_; };
 
   private:
-    u32 vao;
+    u32 vbo, ebo, vao;
+    usize vertexCount_;
   };
 }

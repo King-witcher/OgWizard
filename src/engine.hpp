@@ -1,15 +1,29 @@
+#pragma once
+
 #include "rust_types.hpp"
+#include "window.hpp"
+#include "model.hpp"
+#include "pipeline.hpp"
 
 #include <glad/glad.h>
+#include <memory>
 
 namespace ogw
 {
-  struct AttributeDescription
+  class Engine
   {
-    u32 location;
-    i32 size;
-    GLenum type;
-    usize stride;
-    usize offset;
+  public:
+    Engine(i32 width, i32 height, string title);
+
+    void run();
+
+  private:
+    void loadModels();
+    void drawFrame() const;
+    void processInput();
+
+    std::unique_ptr<ogw::Model> ogwModel;
+    std::unique_ptr<Pipeline> shaderProgram;
+    ogw::Window window;
   };
 }

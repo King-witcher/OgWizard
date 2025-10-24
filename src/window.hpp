@@ -9,22 +9,25 @@
 
 using namespace std;
 
-class Window
+namespace ogw
 {
-public:
-  Window(i32 width, i32 height, string title);
-  ~Window();
+  class Window
+  {
+  public:
+    Window(i32 width, i32 height, string title);
+    ~Window();
 
-  Window(const Window &) = delete;
-  Window &operator=(const Window &) = delete;
+    Window(const Window &) = delete;
+    Window &operator=(const Window &) = delete;
 
-  bool shouldClose() { return glfwWindowShouldClose(window); }
-  GLFWwindow *get() { return window; }
+    bool shouldClose() const { return glfwWindowShouldClose(window); }
+    GLFWwindow *get() const { return window; }
 
-private:
-  void initGlfw();
-  void spawnWindow(i32 width, i32 height, string title);
-  void initGlad();
+  private:
+    void initGlfw();
+    void spawn(i32 width, i32 height, string title, GLFWmonitor *monitor);
+    void initGlad();
 
-  GLFWwindow *window;
-};
+    GLFWwindow *window;
+  };
+}

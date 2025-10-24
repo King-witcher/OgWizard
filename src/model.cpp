@@ -25,17 +25,17 @@ vector<AttributeDescription> Model::Vertex::defaultAttributeDescriptions()
 
 Model::Model(const vector<Vertex> &verteices, const vector<u32> &indices)
 {
-  glGenVertexArrays(1, &vao);
-  glBindVertexArray(vao);
+  vertexCount_ = indices.size();
 
-  u32 vbo, ebo;
+  glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo);
   glGenBuffers(1, &ebo);
 
+  glBindVertexArray(vao);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, verteices.size() * sizeof(Vertex), verteices.data(), GL_STATIC_DRAW);
-
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+  glBufferData(GL_ARRAY_BUFFER, verteices.size() * sizeof(Vertex), verteices.data(), GL_STATIC_DRAW);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(u32), indices.data(), GL_STATIC_DRAW);
 
   auto attribs = Vertex::defaultAttributeDescriptions();
@@ -50,9 +50,6 @@ Model::Model(const vector<Vertex> &verteices, const vector<u32> &indices)
 Model::~Model()
 {
   glDeleteVertexArrays(1, &vao);
-}
-
-void Model::bind() const
-{
-  glBindVertexArray(vao);
+  glDeleteBuffers(1, &ebo);
+  glDeleteBuffers(1, &vbo);
 }

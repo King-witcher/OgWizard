@@ -1,4 +1,4 @@
-#include "shader.hpp"
+#include "pipeline.hpp"
 #include "rust_types.hpp"
 
 #include <fstream>
@@ -35,13 +35,13 @@ GLuint compileShader(string source, GLenum type)
   {
     char infoLog[512];
     glGetShaderInfoLog(shaderId, 512, nullptr, infoLog);
-    throw runtime_error("ERROR::SHADER::COMPILATION_FAILED\n"s + infoLog);
+    throw runtime_error("ERROR::SHADER::COMPILATION_FAILED: "s + source + "\n" + infoLog);
   }
 
   return shaderId;
 }
 
-ShaderProgram::ShaderProgram(string vertexPath, string fragmentPath)
+ogw::Pipeline::Pipeline(string vertexPath, string fragmentPath)
 {
   auto vertexCode = readFile(vertexPath);
   auto fragmentCode = readFile(fragmentPath);
@@ -55,17 +55,12 @@ ShaderProgram::ShaderProgram(string vertexPath, string fragmentPath)
   glDeleteShader(fragment);
 }
 
-ShaderProgram::~ShaderProgram()
+ogw::Pipeline::~Pipeline()
 {
   glDeleteProgram(glProgramId);
 }
 
-void ShaderProgram::use()
-{
-  glUseProgram(glProgramId);
-}
-
-void ShaderProgram::createProgram(GLuint vertex, GLuint fragment)
+void ogw::Pipeline::createProgram(GLuint vertex, GLuint fragment)
 {
   glProgramId = glCreateProgram();
   glAttachShader(glProgramId, vertex);

@@ -5,10 +5,21 @@
 
 #include <stdexcept>
 
+using namespace ogw;
+
 Window::Window(i32 width, i32 height, string title)
 {
   initGlfw();
-  spawnWindow(width, height, title);
+
+  i32 monitorCount;
+  GLFWmonitor **monitors = glfwGetMonitors(&monitorCount);
+  GLFWmonitor *monitor;
+  if (monitorCount > 1)
+    monitor = monitors[1];
+  else
+    monitor = monitors[0];
+
+  spawn(width, height, title, monitor);
 }
 
 Window::~Window()
@@ -26,9 +37,10 @@ void Window::initGlfw()
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 }
 
-void Window::spawnWindow(i32 width, i32 height, string title)
+void Window::spawn(i32 width, i32 height, string title, GLFWmonitor *monitor)
 {
-  window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+  window = glfwCreateWindow(width, height, title.c_str(), monitor, nullptr);
+  glfwSetWindowPos(window, -1000, 200);
   if (!window)
   {
     glfwTerminate();
