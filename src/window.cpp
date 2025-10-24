@@ -39,7 +39,7 @@ void Window::initGlfw()
 
 void Window::spawn(i32 width, i32 height, string title, GLFWmonitor *monitor)
 {
-  window = glfwCreateWindow(width, height, title.c_str(), monitor, nullptr);
+  window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
   glfwSetWindowPos(window, -1000, 200);
   if (!window)
   {

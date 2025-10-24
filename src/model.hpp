@@ -13,13 +13,20 @@ namespace ogw
   public:
     struct Vertex
     {
-      float position[2];
-      float color[3];
+      f32 position[2];
+      f32 color[3];
 
       static std::vector<AttributeDescription> defaultAttributeDescriptions();
     };
 
-    Model(const std::vector<Vertex> &verteices, const std::vector<u32> &indices);
+    struct Polygon
+    {
+      u32 v1;
+      u32 v2;
+      u32 v3;
+    };
+
+    Model(const std::vector<Vertex> &vertices, const std::vector<Polygon> &polygons);
     ~Model();
 
     Model &operator=(const Model &) = delete;

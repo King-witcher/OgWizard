@@ -2,7 +2,7 @@
 
 int main()
 {
-  ogw::Engine engine(1920, 1080, "OgWizard");
+  ogw::Engine engine(800, 600, "OgWizard");
   engine.run();
 
   return 0;

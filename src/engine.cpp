@@ -10,16 +10,16 @@ ogw::Engine::Engine(i32 width, i32 height, string title)
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     throw runtime_error("Failed to initialize GLAD");
   glViewport(0, 0, width, height);
-  glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+  glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-  shaderProgram = std::make_unique<Pipeline>("src/shaders/shader.vert", "src/shaders/shader.frag");
+  pipeline = std::make_unique<Pipeline>("src/shaders/shader.vert", "src/shaders/shader.frag");
 
   loadModels();
 }
 
 void ogw::Engine::run()
 {
-  shaderProgram->use();
+  pipeline->use();
   ogwModel->bind();
   while (!window.shouldClose())
   {
@@ -30,22 +30,19 @@ void ogw::Engine::run()
 
 void ogw::Engine::loadModels()
 {
-  vector<ogw::Model::Vertex> vertices = {
-      {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-      {{-0.5f, 0.5f}, {1.0f, 1.0f, 0.0f}},
-      {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-      {{0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}},
-  };
-  vector<u32> indices{
-      0,
-      1,
-      3,
-      1,
-      2,
-      3,
+  vector<ogw::Model::Vertex> vertices{
+      {{-0.4f, -0.4f}, {0.7f, 0.6f, 0.7f}},
+      {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}},
+      {{0.6f, 0.6f}, {0.7f, 0.6f, 0.7f}},
+      {{0.5f, -0.5f}, {0.5f, 0.4f, 0.6f}},
   };
 
-  ogwModel = std::make_unique<ogw::Model>(vertices, indices);
+  vector<ogw::Model::Polygon> polygons{
+      {0, 1, 2},
+      {0, 2, 3},
+  };
+
+  ogwModel = std::make_unique<ogw::Model>(vertices, polygons);
 }
 
 void ogw::Engine::drawFrame() const

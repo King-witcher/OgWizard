@@ -23,7 +23,7 @@ namespace ogw
     void processInput();
 
     std::unique_ptr<ogw::Model> ogwModel;
-    std::unique_ptr<Pipeline> shaderProgram;
+    std::unique_ptr<Pipeline> pipeline;
     ogw::Window window;
   };
 }

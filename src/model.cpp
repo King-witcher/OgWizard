@@ -23,9 +23,9 @@ vector<AttributeDescription> Model::Vertex::defaultAttributeDescriptions()
   return attribDescription;
 }
 
-Model::Model(const vector<Vertex> &verteices, const vector<u32> &indices)
+Model::Model(const std::vector<Vertex> &vertices, const std::vector<Polygon> &polygons)
 {
-  vertexCount_ = indices.size();
+  vertexCount_ = polygons.size() * 3;
 
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo);
@@ -35,8 +35,8 @@ Model::Model(const vector<Vertex> &verteices, const vector<u32> &indices)
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-  glBufferData(GL_ARRAY_BUFFER, verteices.size() * sizeof(Vertex), verteices.data(), GL_STATIC_DRAW);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(u32), indices.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, polygons.size() * sizeof(Polygon), polygons.data(), GL_STATIC_DRAW);
 
   auto attribs = Vertex::defaultAttributeDescriptions();
 
