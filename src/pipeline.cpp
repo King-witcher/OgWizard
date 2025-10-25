@@ -8,6 +8,7 @@
 #include <stdexcept>
 
 using namespace std;
+using namespace ogw;
 
 string readFile(const string &filepath)
 {
@@ -41,7 +42,7 @@ GLuint compileShader(string source, GLenum type)
   return shaderId;
 }
 
-ogw::Pipeline::Pipeline(string vertexPath, string fragmentPath)
+Pipeline::Pipeline(string vertexPath, string fragmentPath)
 {
   auto vertexCode = readFile(vertexPath);
   auto fragmentCode = readFile(fragmentPath);
@@ -49,18 +50,23 @@ ogw::Pipeline::Pipeline(string vertexPath, string fragmentPath)
   GLuint vertex = compileShader(vertexCode, GL_VERTEX_SHADER);
   GLuint fragment = compileShader(fragmentCode, GL_FRAGMENT_SHADER);
 
-  createProgram(vertex, fragment);
+  createShaderProgram(vertex, fragment);
 
   glDeleteShader(vertex);
   glDeleteShader(fragment);
 }
 
-ogw::Pipeline::~Pipeline()
+Pipeline::~Pipeline()
 {
   glDeleteProgram(glProgramId);
 }
 
-void ogw::Pipeline::createProgram(GLuint vertex, GLuint fragment)
+void Pipeline::setup()
+{
+  glUseProgram(glProgramId);
+}
+
+void Pipeline::createShaderProgram(GLuint vertex, GLuint fragment)
 {
   glProgramId = glCreateProgram();
   glAttachShader(glProgramId, vertex);

@@ -19,6 +19,12 @@ namespace ogw
     usize offset;
   };
 
+  struct PipelineCreateInfo
+  {
+    string vertexPath;
+    string fragmentPath;
+  };
+
   class Pipeline
   {
   public:
@@ -28,10 +34,10 @@ namespace ogw
     Pipeline(const Pipeline &) = delete;
     Pipeline &operator=(const Pipeline &) = delete;
 
-    void use() { glUseProgram(glProgramId); };
+    void setup() { glUseProgram(glProgramId); };
 
   private:
-    void createProgram(GLuint vertex, GLuint fragment);
+    void createShaderProgram(GLuint vertex, GLuint fragment);
 
     GLuint glProgramId;
   };

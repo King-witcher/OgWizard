@@ -19,8 +19,9 @@ ogw::Engine::Engine(i32 width, i32 height, string title)
 
 void ogw::Engine::run()
 {
-  pipeline->use();
+  pipeline->setup();
   ogwModel->bind();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   while (!window.shouldClose())
   {
     processInput();
@@ -48,7 +49,6 @@ void ogw::Engine::loadModels()
 void ogw::Engine::drawFrame() const
 {
   glClear(GL_COLOR_BUFFER_BIT);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glDrawElements(GL_TRIANGLES, ogwModel->vertexCount(), GL_UNSIGNED_INT, 0);
   glfwSwapBuffers(window.get());
 }
