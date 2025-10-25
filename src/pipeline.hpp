@@ -23,18 +23,19 @@ namespace ogw
   {
     string vertexPath;
     string fragmentPath;
+    bool spirv;
   };
 
   class Pipeline
   {
   public:
-    Pipeline(string vertexPath, string fragmentPath);
+    Pipeline(PipelineCreateInfo createInfo);
     ~Pipeline();
 
     Pipeline(const Pipeline &) = delete;
     Pipeline &operator=(const Pipeline &) = delete;
 
-    void setup() { glUseProgram(glProgramId); };
+    void setup();
 
   private:
     void createShaderProgram(GLuint vertex, GLuint fragment);

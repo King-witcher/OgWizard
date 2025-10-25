@@ -84,11 +84,11 @@
         "owner": "glslc",
         "fileLocation": ["relative", "${workspaceFolder}"],
         "pattern": {
-          "regexp": "^(?:ERROR|WARNING): (.*):(\\d+):(\\d+): (.*)$",
+          "regexp": "(.+\\.(frag|vert)):(\\d+): (error|warning): (.+)",
           "file": 1,
-          "line": 2,
-          "column": 3,
-          "message": 4
+          "line": 3,
+          "severity": 4,
+          "message": 5,
         }
       }
     },
@@ -101,7 +101,7 @@
         "color": "terminal.ansiGreen",
       },
       "dependsOn": [
-        // "glslc: compile",
+        "glslc: compile",
         "g++: build (Release)"
       ],
       "dependsOrder": "parallel",
@@ -116,7 +116,7 @@
         "color": "terminal.ansiRed",
       },
       "dependsOn": [
-        // "glslc: compile",
+        "glslc: compile",
         "g++: build (Debug)"
       ],
       "dependsOrder": "parallel",

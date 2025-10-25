@@ -12,7 +12,12 @@ ogw::Engine::Engine(i32 width, i32 height, string title)
   glViewport(0, 0, width, height);
   glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-  pipeline = std::make_unique<Pipeline>("src/shaders/shader.vert", "src/shaders/shader.frag");
+  PipelineCreateInfo pipelineInfo{};
+  pipelineInfo.vertexPath = "base/shaders/shader.vert.spv";
+  pipelineInfo.fragmentPath = "base/shaders/shader.frag.spv";
+  pipelineInfo.spirv = true;
+
+  pipeline = std::make_unique<Pipeline>(pipelineInfo);
 
   loadModels();
 }
