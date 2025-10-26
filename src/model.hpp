@@ -15,6 +15,7 @@ namespace ogw
     {
       f32 position[2];
       f32 color[3];
+      f32 uv[2];
 
       static std::vector<AttributeDescription> defaultAttributeDescriptions();
     };

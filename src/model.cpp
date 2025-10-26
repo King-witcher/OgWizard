@@ -7,20 +7,30 @@ using namespace ogw;
 
 vector<AttributeDescription> Model::Vertex::defaultAttributeDescriptions()
 {
-  vector<AttributeDescription> attribDescription(2);
-  attribDescription[0].location = 0;
-  attribDescription[0].size = 2;
-  attribDescription[0].type = GL_FLOAT;
-  attribDescription[0].stride = sizeof(Vertex);
-  attribDescription[0].offset = offsetof(Vertex, position);
+  auto stride = sizeof(Vertex);
 
-  attribDescription[1].location = 3;
-  attribDescription[1].size = 3;
-  attribDescription[1].type = GL_FLOAT;
-  attribDescription[1].stride = sizeof(Vertex);
-  attribDescription[1].offset = offsetof(Vertex, color);
+  AttributeDescription vertexLocation{};
+  vertexLocation.location = 0;
+  vertexLocation.components = 2;
+  vertexLocation.type = GL_FLOAT;
+  vertexLocation.stride = stride;
+  vertexLocation.offset = offsetof(Vertex, position);
 
-  return attribDescription;
+  AttributeDescription vertexColor{};
+  vertexColor.location = 1;
+  vertexColor.components = 3;
+  vertexColor.type = GL_FLOAT;
+  vertexColor.stride = stride;
+  vertexColor.offset = offsetof(Vertex, color);
+
+  AttributeDescription vertexUV{};
+  vertexUV.location = 2;
+  vertexUV.components = 2;
+  vertexUV.type = GL_FLOAT;
+  vertexUV.stride = stride;
+  vertexUV.offset = offsetof(Vertex, uv);
+
+  return {vertexLocation, vertexColor, vertexUV};
 }
 
 Model::Model(const std::vector<Vertex> &vertices, const std::vector<Polygon> &polygons)
@@ -42,7 +52,14 @@ Model::Model(const std::vector<Vertex> &vertices, const std::vector<Polygon> &po
 
   for (auto attrib : attribs)
   {
-    glVertexAttribPointer(attrib.location, attrib.size, attrib.type, GL_FALSE, attrib.stride, (void *)attrib.offset);
+    glVertexAttribPointer(
+        attrib.location,
+        attrib.components,
+        attrib.type,
+        GL_FALSE,
+        attrib.stride,
+        (void *)attrib.offset);
+
     glEnableVertexAttribArray(attrib.location);
   }
 }

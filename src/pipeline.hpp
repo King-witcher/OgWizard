@@ -13,7 +13,7 @@ namespace ogw
   struct AttributeDescription
   {
     u32 location;
-    i32 size;
+    i32 components;
     GLenum type;
     usize stride;
     usize offset;

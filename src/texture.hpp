@@ -64,6 +64,7 @@ namespace ogw
     ~Texture();
 
     void bind() const;
+    u32 get() const { return glTextureID; }
 
   private:
     i32 width, height, nrChannels;

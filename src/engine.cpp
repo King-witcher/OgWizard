@@ -1,5 +1,6 @@
 #include "engine.hpp"
 #include "model.hpp"
+#include "texture.hpp"
 
 #include <stdexcept>
 #include <vector>
@@ -26,6 +27,21 @@ void ogw::Engine::run()
 {
   pipeline->setup();
   ogwModel->bind();
+
+  ogw::Texture::CreateInfo textureInfo{};
+  textureInfo.filePath = "base/king.png";
+  textureInfo.format = ogw::Texture::Format::RGBA;
+  textureInfo.internalFormat = ogw::Texture::InternalFormat::RGB;
+  textureInfo.magFilter = ogw::Texture::FilterMode::Nearest;
+  textureInfo.minFilter = ogw::Texture::FilterMode::Nearest;
+  textureInfo.mipLevel = 0;
+  textureInfo.mipmapInterpolation = ogw::Texture::FilterMode::Nearest;
+  textureInfo.wrapS = ogw::Texture::WrapMode::Repeat;
+  textureInfo.wrapT = ogw::Texture::WrapMode::Repeat;
+
+  ogw::Texture texture(textureInfo);
+  texture.bind();
+
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   while (!window.shouldClose())
   {
@@ -37,10 +53,10 @@ void ogw::Engine::run()
 void ogw::Engine::loadModels()
 {
   vector<ogw::Model::Vertex> vertices{
-      {{-0.4f, -0.4f}, {0.7f, 0.6f, 0.7f}},
-      {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}},
-      {{0.6f, 0.6f}, {0.7f, 0.6f, 0.7f}},
-      {{0.5f, -0.5f}, {0.5f, 0.4f, 0.6f}},
+      {{-0.8f, -0.8f}, {0.7f, 0.7f, 0.7f}, {0.0f, 1.0f}},
+      {{-1.0f, 1.0f}, {1, 1, 1}, {0.0f, 0.0f}},
+      {{0.8f, 0.8f}, {0.8f, 0.8f, 0.8f}, {1.0f, 0.0f}},
+      {{0.6f, -0.6f}, {0.6f, 0.6f, 0.6f}, {1.0f, 1.0f}},
   };
 
   vector<ogw::Model::Polygon> polygons{
